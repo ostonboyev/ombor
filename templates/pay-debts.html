@@ -1,0 +1,99 @@
+{%extends 'base.html'%}
+{% block title %} To'langan qarzlar {% endblock %}
+{% block page %} To'langan qarzlar {% endblock %}
+{% block pay_debt_actve %} active {% endblock %}
+
+{% block content %}
+<div class="col-md-12">
+    <div class="card card-dark">
+        <div class="card-header border-0">
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#myModal">qarzni qoplash
+                </button>
+                <form class="d-flex">
+                    <input type="text" name="search" class="form-control mr-2" value="{%if search%} {{search }}{%endif%}" placeholder="Qidirish">
+                    <button class="btn btn-secondary"> Qidirish </button>
+                    <a href="#" class="btn btn-danger " >Tozalash</a>
+                </form>
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table" style="text-align: center;">
+                <thead>
+                <tr>
+                    <th scope="col" style="width: 15px">T/r</th>
+                    <th scope="col" style="width: 255px; text-align: center;">Mijoz</th>
+                    <th scope="col" style="text-align: center;">To'lov miqdori</th>
+                    <th scope="col" style="text-align: center;">Izoh</th>
+                    <th scope="col" style="text-align: center;">sana</th>
+                    <th scope="col" style="text-align: center;">xodim</th>
+                    <th scope="col" style="text-align: center;">Imkoniyatlar</th>
+                </tr>
+                </thead>
+                <tbody>
+                {%for pay_debt in pay_debts %}
+                <tr>
+                    <th scope="row">{{forloop.counter}}</th>
+                    <td>{{pay_debt.cliend.name }} - {{pay_debt.cliend.shop_name}}</td>
+                    <td>{{pay_debt.price|floatformat:2}} so'm</td>
+                    <td>{{pay_debt.description }}</td>
+                    <td>{{pay_debt.created_at}}</td>
+                    <td>{{pay_debt.user.get_full_name }}</td>
+                    <td style="display: flex; gap: 20px">
+                        <a href="{% url 'edit-pay-debt' pay_debt.id %}">
+                            <button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#EditModal">
+                                Tahrirlash
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+                {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header bg-dark">
+                <h4 class="modal-title">Qarzni qoplash</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <form id="new-pay-form" method="post">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <label for="cliend">Mijoz:</label>
+                    <select name="cliend_id" id="cliend" class="form-control">
+                        {%for cliend in cliends%}
+                        <option value="{{cliend.id}}">{{cliend.name}} - {{cliend.shop_name}} - {{ cliend.debt}} so'm</option>
+                        {%endfor%}
+                    </select>
+                    <br>
+                    <label for="price">To'lov miqdori(so'm):</label>
+                    <input type="number" name="price" value="0" id="price" class="form-control" required>
+                    <br>
+                    <label for="description">Izoh:</label>
+                    <textarea name="description"  id="description" class="form-control" required> izohingizni kiriting ... </textarea>
+                    <br>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Qo`shish</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Yopish</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<!-- ./wrapper -->
+
+{% endblock %}

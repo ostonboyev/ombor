@@ -1,0 +1,102 @@
+{%extends 'base.html'%}
+{%block title%} Mijozlar {%endblock%}
+{%block page%} Mijozlar {%endblock%}
+{%block client_active%} active {%endblock%}
+{%block content%}
+    <div class="col-md-12">
+        <div class="card card-dark">
+            <div class="card-header border-0">
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                        Mijoz qo'shish
+                    </button>
+                    <form class="d-flex">
+                    <input type="text" name="search" class="form-control mr-2" value="{%if search%} {{search }}{%endif%}" placeholder="Qidirish">
+                    <button class="btn btn-secondary"> Qidirish </button>
+                    <a href="{% url 'clients' %}" class="btn btn-danger " >Tozalash</a>
+                </form>
+            </div>
+            <div class="card-body">
+                <table class="table" style="text-align: center;">
+                    <thead>
+                        <tr>
+                            <th scope="col" style="width: 15px">T/r</th>
+                            <th scope="col" style="width: 255px; text-align: center;">FIO</th>
+                            <th scope="col" style="text-align: center;">Do'kon nomi</th>
+                            <th scope="col" style="text-align: center;">Telefon raqam</th>
+                            <th scope="col" style="text-align: center;">Manzil</th>
+                            <th scope="col" style="text-align: center;">Qarz(so'm)</th>
+                            <th scope="col" style="text-align: center;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {%for client in clients%}
+                        <tr>
+                            <th scope="row">{{forloop.counter}}</th>
+                            <td>{{client.name}}</td>
+                            <td>{%if client.shop_name%}{{client.shop_name}}{%else%} - {%endif%}</td>
+                            <td>{{client.phone_number}}</td>
+                            <td>{{client.address}}</td>
+                            <td>{{client.debt |floatformat:2}}</td>
+                            <td>
+                                <a href="/clients/{{client.id}}/edit/">
+                                    <button type="submit" class="btn btn-warning" data-toggle="modal">
+                                        Tahrirlash
+                                    </button></a>
+                                <a href="/clients/{{client.id}}/delete/">
+                                    <button type="submit" class="btn btn-danger" data-toggle="modal">
+                                       O'chirish
+                                    </button></a>
+                            </td>
+                        </tr>
+                    {%endfor%}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="myModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+    
+          <!-- Modal Header -->
+          <div class="modal-header bg-dark">
+            <h4 class="modal-title">Yangi mijoz</h4>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+    
+          <!-- Modal body -->
+          <form id="new-product-form" method="post" >
+              {%csrf_token%}
+
+            <div class="modal-body">
+              <label for="name">FIO:</label>
+              <input type="text" name="name" placeholder="Mijoz to'liq ismi..." id="name" class="form-control" required>
+                <br>
+              <label for="shop-name">Do'kon nomi:</label>
+              <input type="text" name="shop_name" placeholder="Do'kon nomi..." id="shop-name" class="form-control" >
+              <br>
+              <label for="phone-number">Telefon raqami:</label>
+              <input type="text" name="phone_number" placeholder="Telefon raqami..." id="phone-number" class="form-control" >
+              <br>
+              <label for="address">Manzili:</label>
+              <input type="text" name="address" placeholder="Mijoz manzili..." id="address" class="form-control" >
+              <br>
+              <label for="debt">Qarz:</label>
+              <input type="text" name="debt" value="0" id="debt" class="form-control" required>
+              <br>
+            </div>
+    
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success">Qo`shish</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Yopish</button>
+        </div>
+      </form>
+    
+        </div>
+      </div>
+    </div>
+
+{%endblock%}

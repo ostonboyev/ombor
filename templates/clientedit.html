@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{%block title %} Client | tahrirlash {% endblock %}
+{%block page %} {{cliend.name}} {% endblock %}
+{%block client_active %} active {% endblock %}
+{%block content%}
+<!-- Modal body -->
+<form id="edit-product-form" method="post" style="margin: 20px">
+    {%csrf_token%}
+    <label for="name">F.I.O:</label>
+    <input type="text" name="name" value="{{cliend.name}}" placeholder="Mijoz ismi" id="name"
+           class="form-control" required>
+    <br>
+    <label for="shop_name">Dokon nomi:</label>
+    <input type="text" name="shop_name" value="{{cliend.shop_name}}" placeholder="Dokon nomi..."
+           id="shop_name" class="form-control" >
+    <br>
+    <label for="phone_number">Telefon raqami:</label>
+    <input type="number" name="phone_number" value="{{cliend.phone_number}}" placeholder="cliend raqami..."
+           id="phone_number" class="form-control">
+    <br>
+    <label for="address">Manzil</label>
+    <input type="text" name="address" value="{{cliend.address}}" placeholder="cliend manzili"
+           id="address" class="form-control">
+    <br>
+    <label for="debt">Qarzi</label>
+    <input type="text" name="debt" value="{{cliend.debt}}" placeholder="qarzi"
+           id="debt" class="form-control" required>
+    <br>
+
+    <!-- Modal footer -->
+    <button type="submit" class="btn btn-success">Tasdiqlash</button>
+    <a href="{%url 'clients' %}">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Yopish</button>
+    </a>
+
+</form>
+
+{%endblock%}

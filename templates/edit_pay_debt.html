@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}To'langan qarzlar | Tahrirlash {% endblock %}
+
+{% block page %} {{ pay_debt.cliend.name }} {% endblock %}
+
+{% block pay_debt_actve %} active {% endblock %}
+
+{% block content %}
+<form id="edit-pay-debt-form" method="post" style="margin: 20px;">
+    {% csrf_token %}
+
+    <label for="edit-pay-debt-quantity">To'lov miqdori:</label>
+    <input type="number" name="quantity" value="{{ pay_debt.price }}" placeholder="Miqdor..."
+           id="edit-pay-debt-quantity" class="form-control" required>
+    <br>
+
+    <label for="description">Izoh:</label>
+    <textarea  name="description"  id="description" class="form-control" required> izohingizni kiriting ... </textarea>
+    <br>
+
+    <!-- Modal footer -->
+    <button type="submit" class="btn btn-success">Tasdiqlash</button>
+    <a href="{% url 'pay-debts' %}">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Yopish</button>
+    </a>
+</form>
+{% endblock %}

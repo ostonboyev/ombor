@@ -1,0 +1,117 @@
+{%extends 'base.html'%}
+{% block title %} Sotuvlar {% endblock %}
+{% block page %} Sotuvlar {% endblock %}
+{% block sale_active %} active {% endblock %}
+
+{% block content %}
+<div class="col-md-12">
+    <div class="card card-dark">
+        <div class="card-header border-0">
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Sotuv Qoshish
+                </button>
+                <form class="d-flex">
+                    <input type="text" name="search" class="form-control mr-2" value="{%if search%} {{search }}{%endif%}" placeholder="Qidirish">
+                    <button class="btn btn-secondary"> Qidirish </button>
+                    <a href="{% url 'sales' %}" class="btn btn-danger " >Tozalash</a>
+                </form>
+            </div>
+
+        </div>
+        <div class="card-body">
+            <table class="table" style="text-align: center;">
+                <thead>
+                <tr>
+                    <th scope="col" style="width: 15px">T/r</th>
+                    <th scope="col" style="width: 255px; text-align: center;">Mahsulot</th>
+                    <th scope="col" style="text-align: center;">Mijoz</th>
+                    <th scope="col" style="text-align: center;">Miqdor</th>
+                    <th scope="col" style="text-align: center;">Jami</th>
+                    <th scope="col" style="text-align: center;">To'landi</th>
+                    <th scope="col" style="text-align: center;">Qoldi</th>
+                    <th scope="col" style="text-align: center;">Xodim</th>
+                    <th scope="col" style="text-align: center;">Imkoniyatlar</th>
+                </tr>
+                </thead>
+                <tbody>
+                {%for sale in sales %}
+                <tr>
+                    <th scope="row">{{forloop.counter}}</th>
+                    <td>{{sale.product.name}} {%if sale.product.brand%} - {{sale.product.brand}}{%endif%}</td>
+                    <td>{{sale.cliend.name}}</td>
+                    <td>{{sale.quantity}} {{sale.product.unit}} </td>
+                    <td>{{sale.total_price | floatformat:2}}</td>
+                    <td>{{sale.paid_price | floatformat:2}}</td>
+                    <td>{{sale.debt_price | floatformat:2}}</td>
+                    <td>{{sale.user.get_full_name }}</td>
+                    <td style="display: flex; gap: 20px">
+                        <a href="/sales/{{sales.id}}/update/">
+                            <button type="submit" class="btn btn-warning" data-toggle="modal" data-target="#EditModal">
+                                Tahrirlash
+                            </button>
+                        </a>
+                    </td>
+                </tr>
+                {%endfor%}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header bg-dark">
+                <h4 class="modal-title">Sotuv qo'shish</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <form id="new-sale-form" method="post">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <label for="product">Mahsulot:</label>
+                    <select name="product_id" id="product" class="form-control">
+                        {%for product in products%}
+                        <option value="{{product.id}}">{{product.name}} ({{product.quantity}} {{product.unit}} mavjud! {{product.price|floatformat:2}} so'm)</option>
+                        {%endfor%}
+                    </select>
+                    <br>
+                    <label for="quantity">Miqdor:</label>
+                    <input type="number" name="quantity" value="0" id="quantity" class="form-control">
+                    <br>
+                    <label for="cliend">Mijoz:</label>
+                    <select name="cliend_id" id="cliend" class="form-control">
+                        {%for cliend in clients%}
+                        <option value="{{cliend.id}}">{{cliend.name}} ({{cliend.shop_name}})</option>
+                        {%endfor%}
+                    </select>
+                    <br>
+                    <label for="total_price">Jami:</label>
+                    <input type="number" name="total_price"  id="total_price" class="form-control" value="0">
+                    <br>
+                    <label for="paid_price">To'landi:</label>
+                    <input type="number" name="paid_price"  id="paid_price"  class="form-control" value="0">
+                    <br>
+                    <label for="debt_price">Qoldi:</label>
+                    <input type="number" name="debt_price"  id="debt_price" class="form-control" value="0">
+                    <br>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Qo`shish</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Yopish</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<!-- ./wrapper -->
+
+{% endblock %}

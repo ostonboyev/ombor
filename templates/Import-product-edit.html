@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %} Mahsulot importi | Tahrirlash {% endblock %}
+
+{% block page %} {{ import_product.product.name }} {% endblock %}
+
+{% block import_product_active %} active {% endblock %}
+
+{% block content %}
+<form id="edit-import-product-form" method="post" style="margin: 20px;">
+    {% csrf_token %}
+
+    <label for="edit-import-product-name">Mahsulot:</label>
+    <input type="text" name="product" value="{{ import_product.product.name }}" placeholder="Mahsulot nomi..."
+           id="edit-import-product-name" class="form-control" required>
+    <br>
+
+    <label for="edit-import-product-quantity">Miqdor:</label>
+    <input type="number" name="quantity" value="{{ import_product.quantity }}" placeholder="Miqdor..."
+           id="edit-import-product-quantity" class="form-control" required>
+    <br>
+
+    <label for="edit-import-product-buy-price">Sotib olish narxi:</label>
+    <input type="number" name="buy_price" value="{{ import_product.buy_price|floatformat:2 }}" placeholder="Narx..."
+           id="edit-import-product-buy-price" class="form-control" required>
+    <br>
+
+    <label for="edit-import-product-branch">Filial:</label>
+    <input type="text" name="branch" value="{{ import_product.branch.name }}" placeholder="Filial nomi..."
+           id="edit-import-product-branch" class="form-control" required>
+    <br>
+
+    <!-- Modal footer -->
+    <button type="submit" class="btn btn-success">Tasdiqlash</button>
+    <a href="{% url 'imports' %}">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Yopish</button>
+    </a>
+</form>
+{% endblock %}

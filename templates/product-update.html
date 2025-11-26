@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{%block title %} Mahsulot| tahrirlash {% endblock %}
+{%block page %} {{product.name}} {% endblock %}
+{%block product_active %} active {% endblock %}
+{%block content%}
+<!-- Modal body -->
+<form id="edit-product-form" method="post" style="margin: 20px">
+    {%csrf_token%}
+    <label for="edit-product-name">Nom:</label>
+    <input type="text" name="name" value="{{product.name}}" placeholder="Mahsulot nomi..." id="edit-product-name"
+           class="form-control" required>
+    <br>
+    <label for="edit-product-name">Brend:</label>
+    <input type="text" name="brand" value="{{product.brand}}" placeholder="Brend nomi..."
+           id="edit-product-brend" class="form-control" >
+    <br>
+    <label for="edit-product-price">Sotish:</label>
+    <input type="number" name="price" value="{{product.price|floatformat:2}}" placeholder="Mahsulot narxi..."
+           id="edit-product-price" class="form-control">
+    <br>
+    <label for="edit-product-quantity">Mavjud:({{product.unit}})</label>
+    <input type="number" name="quantity" value="{{product.quantity}}" placeholder="...{{product.unit}} qoldi"
+           id="edit-product-quantity" class="form-control">
+    <br>
+    <label for="edit-product-unit">O'lchov birligi:</label>
+    <input type="text" name="unit" value="{{product.unit}}" placeholder="o'lchov birligi"
+           id="edit-product-unit" class="form-control" required>
+    <br>
+
+    <!-- Modal footer -->
+    <button type="submit" class="btn btn-success">Tasdiqlash</button>
+    <a href="{%url 'products' %}">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Yopish</button>
+    </a>
+
+</form>
+
+{%endblock%}
